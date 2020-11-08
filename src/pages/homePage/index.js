@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./homePage.styles.scss";
+import DirectoryMenu from "../../component/directory";
 
 class HomePage extends Component {
   constructor() {
@@ -10,45 +11,13 @@ class HomePage extends Component {
   render() {
     return (
       <div className="homepage">
-        <div className="directory-menu">
-          <div className="menu-item">
-            <div className="content">
-              <h1 className="title">HATS</h1>
-              <span className="subtitle">SHOP NOW</span>
-            </div>
-          </div>
-          <div className="menu-item">
-            <div className="content">
-              <h1 className="title">Test</h1>
-              <span className="subtitle">SHOP NOW</span>
-            </div>
-          </div>
-          <div className="menu-item">
-            <div className="content">
-              <h1 className="title">Test</h1>
-              <span className="subtitle">SHOP NOW</span>
-            </div>
-          </div>
-          <div className="menu-item">
-            <div className="content">
-              <h1 className="title">Test</h1>
-              <span className="subtitle">SHOP NOW</span>
-            </div>
-          </div>
-          <div className="menu-item">
-            <div className="content">
-              <h1 className="title">Test</h1>
-              <span className="subtitle">SHOP NOW</span>
-            </div>
-          </div>
-        </div>
+        <DirectoryMenu></DirectoryMenu>
       </div>
     );
   }
 }
 
 export default HomePage;
-
 
 // import React from 'react';
 
