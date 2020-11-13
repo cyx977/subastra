@@ -6,7 +6,7 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    console.log(props);
+    console.log("props", props);
   }
 
   render() {

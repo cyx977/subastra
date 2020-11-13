@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import MenuItem from "../menuItem";
 import "./directory.styles.scss";
 
+import SECTIONS_DATA from "../../model/static/sectionData";
+
 export const DirectoryMenus = () => {
   return <div className="tt">a</div>;
 };
@@ -10,40 +12,7 @@ export default class DirectoryMenu extends Component {
   constructor() {
     super();
     this.state = {
-      sections: [
-        {
-          title: "hats",
-          imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
-          id: 1,
-          linkUrl: "shop/hats",
-        },
-        {
-          title: "jackets",
-          imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
-          id: 2,
-          linkUrl: "shop/jackets",
-        },
-        {
-          title: "sneakers",
-          imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
-          id: 3,
-          linkUrl: "shop/sneakers",
-        },
-        {
-          title: "womens",
-          imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
-          size: "large",
-          id: 4,
-          linkUrl: "shop/womens",
-        },
-        {
-          title: "mens",
-          imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
-          size: "large",
-          id: 5,
-          linkUrl: "shop/mens",
-        },
-      ],
+      sections: SECTIONS_DATA,
     };
   }
 
@@ -51,8 +20,6 @@ export default class DirectoryMenu extends Component {
     return (
       <div className="directory-menu">
         {this.state.sections.map(({ id, ...sectionProps}) => {
-          console.log(sectionProps);
-          console.log("sectionProps")
           return <MenuItem key={id} {...sectionProps} />;
         })}
       </div>
