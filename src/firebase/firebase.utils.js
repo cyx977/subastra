@@ -28,7 +28,7 @@ export const signinWithGoogle = () =>
   firebase.auth().signInWithPopup(googleProvider);
 export const signinWithFacebook = () =>
   firebase.auth().signInWithPopup(facebookProvider);
-export const logout = function (){
-  console.log(this.state.currentUser)
+export const logout =  ()=>{
+  firebase.auth().signOut();
 }
 

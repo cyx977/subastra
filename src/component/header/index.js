@@ -21,9 +21,7 @@ const Header = (props) => {
           // <Link className="option" onClick={logout}>
           //   SIGN OUT
           // </Link>
-          <button className="option" onClick={() => logout()}>
-            LOGOUT
-          </button>
+          <Link to="" className="option" onClick={logout}>LOGOUT</Link>
         ) : (
           <Link className="option" to="signin">
             SIGN IN
