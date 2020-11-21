@@ -1,11 +1,12 @@
 import "./App.css";
 import HomePage from "./pages/homePage";
-import { Route, Switch } from "react-router-dom";
+import { Link, Route, Switch } from "react-router-dom";
 import ShopPage from "./pages/shop";
 import Header from "./component/header";
 import SignInAndSignUpPage from "./pages/signInSignUp";
 import { auth } from "./firebase/firebase.utils";
 import { Component } from "react";
+import { createDb, createUserProfileDocument } from "./firebase/firebase.utils";
 
 class App extends Component {
   constructor(props) {
@@ -43,6 +44,14 @@ class App extends Component {
 export const HatsPage = (props) => (
   <div>
     <h1>HATSPAGE {props.ttt}</h1>{" "}
+    <Link
+      to=""
+      onClick={async () => {
+        createUserProfileDocument();
+      }}
+    >
+      Test
+    </Link>
   </div>
 );
 

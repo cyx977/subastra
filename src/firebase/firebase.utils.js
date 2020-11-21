@@ -16,9 +16,12 @@ const firebaseConfig = {
   measurementId: "G-WEJZ1GMT3B",
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
-export const auth = new firebase.auth();
+export const auth = firebase.auth();
+
 export const fireStore = firebase.firestore();
 
 var googleProvider = new firebase.auth.GoogleAuthProvider();
@@ -28,7 +31,27 @@ export const signinWithGoogle = () =>
   firebase.auth().signInWithPopup(googleProvider);
 export const signinWithFacebook = () =>
   firebase.auth().signInWithPopup(facebookProvider);
-export const logout =  ()=>{
+export const logout = () => {
   firebase.auth().signOut();
-}
+};
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+  let userRef = firebase.firestore().doc(`users/${userAuth.uid}`);
+  let snapShot = await userRef.get();
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  return userRef;
+};
