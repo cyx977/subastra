@@ -21,14 +21,24 @@ class SignUp extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const { displayName, email, password, confirmPassword } = this.state;
+    if(password !== confirmPassword){
+      alert("passwords don't match");
+      return;
+    }
+    try {
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
 
-    const { user } = auth.createUserWithEmailAndPassword(
-      this.state.email,
-      this.state.password
-    );
-
-    let result = await createUserProfileDocument(user);
-    console.log(result);
+      let result = await createUserProfileDocument(user, {
+        displayName,
+      });
+      console.log("firestore",result);
+    } catch (e) {
+      console.log(e);
+    }
 
     this.setState({
       displayName: "",

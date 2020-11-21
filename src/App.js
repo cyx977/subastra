@@ -6,26 +6,52 @@ import Header from "./component/header";
 import SignInAndSignUpPage from "./pages/signInSignUp";
 import { auth } from "./firebase/firebase.utils";
 import { Component } from "react";
-import { createDb, createUserProfileDocument } from "./firebase/firebase.utils";
+import { createUserProfileDocument } from "./firebase/firebase.utils";
+import { store } from "./redux/store";
+import { setCurrentUser } from "./redux/user/userActions";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentUser: null,
-      number: 9840095714,
     };
   }
+
+  unsubscribeFromAuth = null;
+
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      this.setState({ ...this.state, currentUser: user });
-      console.log(this.state);
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+      console.log("user is ", user);
+      if (user != null) {
+        try {
+          const userRef = await createUserProfileDocument(user);
+          userRef.onSnapshot((snapshot) => {
+            // this.setState({
+            //   currentUser: {
+            //     id: snapshot.id,
+            //     ...snapshot.data(),
+            //   },
+            // });
+            store.dispatch(
+              setCurrentUser({ id: snapshot.id, ...snapshot.data() })
+            );
+          });
+        } catch (e) {
+          console.log("error vayo");
+        }
+      }
+      this.setState({ currentUser: user });
     });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
   }
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser}></Header>
+        <Header></Header>
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route

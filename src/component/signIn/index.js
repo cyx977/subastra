@@ -4,8 +4,11 @@ import "./signIn.styles.scss";
 import CustomButton from "../customButton";
 import {
   signinWithGoogle,
-  signinWithFacebook,
+  // signinWithFacebook,
+  auth,
 } from "../../firebase/firebase.utils";
+import { store } from "../../redux/store";
+import { setCurrentUser } from "../../redux/user/userActions";
 
 class SignIn extends Component {
   constructor(props) {
@@ -16,8 +19,17 @@ class SignIn extends Component {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const { user } = await auth.signInWithEmailAndPassword(
+        this.state.email,
+        this.state.password
+      );
+      store.dispatch(setCurrentUser(user));
+    } catch (e) {
+      console.log(e);
+    }
     this.setState({ email: "", password: "" });
   };
 
@@ -47,12 +59,20 @@ class SignIn extends Component {
           />
           <div className="buttons">
             <CustomButton type="submit">Submit</CustomButton>
-            <CustomButton onClick={signinWithGoogle} signinWithGoogle={true}>
-              login with google
+            <CustomButton
+              onClick={signinWithGoogle}
+              signinWithGoogle={true}
+              type="button"
+            >
+              {" "}
+              signin with google
             </CustomButton>
-            <CustomButton onClick={signinWithFacebook}>
-              login with facebook
-            </CustomButton>
+            {
+              //   <CustomButton onClick={signinWithFacebook} type="button">
+              //   {" "}
+              //   login with facebook
+              // </CustomButton>
+            }
           </div>
         </form>
       </div>

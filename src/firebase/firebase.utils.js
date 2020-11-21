@@ -38,20 +38,25 @@ export const logout = () => {
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
   let userRef = firebase.firestore().doc(`users/${userAuth.uid}`);
-  let snapShot = await userRef.get();
-  if (!snapShot.exists) {
-    const { displayName, email } = userAuth;
-    const createdAt = new Date();
-    try {
-      userRef.set({
-        displayName,
-        email,
-        createdAt,
-        ...additionalData,
-      });
-    } catch (e) {
-      console.log(e);
+  try {
+    let snapShot = await userRef.get();
+    if (!snapShot.exists) {
+      console.log("writing to firestore");
+      const { displayName, email } = userAuth;
+      const createdAt = new Date();
+      try {
+        userRef.set({
+          displayName,
+          email,
+          createdAt,
+          ...additionalData,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
+  } catch (e) {
+    console.log("createUserProfileDocument error", e);
   }
   return userRef;
 };
