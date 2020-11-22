@@ -7,8 +7,6 @@ import {
   // signinWithFacebook,
   auth,
 } from "../../firebase/firebase.utils";
-import { store } from "../../redux/store";
-import { setCurrentUser } from "../../redux/user/userActions";
 
 class SignIn extends Component {
   constructor(props) {
@@ -26,7 +24,6 @@ class SignIn extends Component {
         this.state.email,
         this.state.password
       );
-      store.dispatch(setCurrentUser(user));
     } catch (e) {
       console.log(e);
     }
@@ -64,7 +61,6 @@ class SignIn extends Component {
               signinWithGoogle={true}
               type="button"
             >
-              {" "}
               signin with google
             </CustomButton>
             {

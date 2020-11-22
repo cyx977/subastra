@@ -22,7 +22,7 @@ if (!firebase.apps.length) {
 
 export const auth = firebase.auth();
 
-export const fireStore = firebase.firestore();
+// export const fireStore = firebase.firestore();
 
 var googleProvider = new firebase.auth.GoogleAuthProvider();
 var facebookProvider = new firebase.auth.FacebookAuthProvider();
@@ -31,14 +31,15 @@ export const signinWithGoogle = () =>
   firebase.auth().signInWithPopup(googleProvider);
 export const signinWithFacebook = () =>
   firebase.auth().signInWithPopup(facebookProvider);
-export const logout = () => {
+export const logout = async () => {
   firebase.auth().signOut();
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
-  let userRef = firebase.firestore().doc(`users/${userAuth.uid}`);
+  let userRef;
   try {
+    userRef = firebase.firestore().doc(`users/${userAuth.uid}`);
     let snapShot = await userRef.get();
     if (!snapShot.exists) {
       console.log("writing to firestore");

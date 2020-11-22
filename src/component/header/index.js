@@ -4,9 +4,11 @@ import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
 import { logout } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
+import { useHistory } from "react-router";
 
 const Header = ({ currentUser }) => {
-  console.log("currentUser",currentUser);
+  const history = useHistory();
+  console.log("currentUser from header ", currentUser);
   return (
     <div className="header">
       <Link to="/" className="logo-container">
@@ -19,11 +21,8 @@ const Header = ({ currentUser }) => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        {currentUser ? (
-          // <Link className="option" onClick={logout}>
-          //   SIGN OUT
-          // </Link>
-          <Link to="" className="option" onClick={logout}>
+        {currentUser?.currentUser != null ? (
+          <Link to="/" className="option" onClick={async () => await logout()}>
             LOGOUT
           </Link>
         ) : (
@@ -36,6 +35,6 @@ const Header = ({ currentUser }) => {
   );
 };
 
-const stateToProps = (state) => ({ currentUser: state.user.currentUser });
+const mapStateToProps = (state) => ({ currentUser: state.user.currentUser });
 
-export default connect(stateToProps)(Header);
+export default connect(mapStateToProps)(Header);

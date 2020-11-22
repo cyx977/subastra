@@ -7,42 +7,49 @@ import SignInAndSignUpPage from "./pages/signInSignUp";
 import { auth } from "./firebase/firebase.utils";
 import { Component } from "react";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
-import { store } from "./redux/store";
-import { setCurrentUser } from "./redux/user/userActions";
+import { setUserAction } from "./redux1/user/userAction";
+import { connect } from "react-redux";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
-      console.log("user is ", user);
-      if (user != null) {
-        try {
-          const userRef = await createUserProfileDocument(user);
-          userRef.onSnapshot((snapshot) => {
-            // this.setState({
-            //   currentUser: {
-            //     id: snapshot.id,
-            //     ...snapshot.data(),
-            //   },
-            // });
-            store.dispatch(
-              setCurrentUser({ id: snapshot.id, ...snapshot.data() })
-            );
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(
+      async (user) => {
+        if (user == null) {
+          this.props.setCurrentUser({
+            currentUser: null,
           });
-        } catch (e) {
-          console.log("error vayo");
+        } else {
+          console.log("testXXXXX");
+          try {
+            const userRef = await createUserProfileDocument(user);
+            // userRef.onSnapshot(
+            //   (snapshot) => {
+            //     this.props.setCurrentUser({
+            //       currentUser: {
+            //         id: snapshot.id,
+            //         ...snapshot.data(),
+            //       },
+            //     });
+            //     // store.dispatch(setUserAction(user));
+            //   },
+            //   (e) => console.log("error po vayo")
+            // );
+            const snapshot = await userRef.get();
+            this.props.setCurrentUser({
+              currentUser: {
+                id: snapshot.id,
+                ...snapshot.data(),
+              },
+            });
+          } catch (e) {
+            console.log("error vayo");
+          }
         }
-      }
-      this.setState({ currentUser: user });
-    });
+      },
+      (e) => console.log("second param bata", e)
+    );
   }
 
   componentWillUnmount() {
@@ -69,16 +76,15 @@ class App extends Component {
 
 export const HatsPage = (props) => (
   <div>
-    <h1>HATSPAGE {props.ttt}</h1>{" "}
-    <Link
-      to=""
-      onClick={async () => {
-        createUserProfileDocument();
-      }}
-    >
+    <h1>HATSPAGE</h1>{" "}
+    <Link to="" onClick={async () => {}}>
       Test
     </Link>
   </div>
 );
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setUserAction(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
