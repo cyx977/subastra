@@ -1,6 +1,6 @@
 import "./App.css";
 import HomePage from "./pages/homePage";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, Route, Switch, Redirect } from "react-router-dom";
 import ShopPage from "./pages/shop";
 import Header from "./component/header";
 import SignInAndSignUpPage from "./pages/signInSignUp";
@@ -56,6 +56,7 @@ class App extends Component {
     this.unsubscribeFromAuth();
   }
   render() {
+    console.log("appjs ko prop", this.props);
     return (
       <div className="App">
         <Header></Header>
@@ -67,7 +68,17 @@ class App extends Component {
             render={(props) => <HatsPage {...props} ttt="123" />}
           />
           <Route exact path="/shop" component={ShopPage} />
-          <Route exact path="/signin" component={SignInAndSignUpPage} />
+          <Route
+            exact
+            path="/signin"
+            render={() =>
+              this.props.currentUser?.currentUser == null ? (
+                <SignInAndSignUpPage />
+              ) : (
+                <Redirect to="/"></Redirect>
+              )
+            }
+          />
         </Switch>
       </div>
     );
@@ -83,8 +94,12 @@ export const HatsPage = (props) => (
   </div>
 );
 
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUser: (user) => dispatch(setUserAction(user)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
