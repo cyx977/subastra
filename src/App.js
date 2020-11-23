@@ -7,8 +7,9 @@ import SignInAndSignUpPage from "./pages/signInSignUp";
 import { auth } from "./firebase/firebase.utils";
 import { Component } from "react";
 import { createUserProfileDocument } from "./firebase/firebase.utils";
-import { setUserAction } from "./redux1/user/userAction";
+import { setUserAction } from "./redux/user/userAction";
 import { connect } from "react-redux";
+import { PageNotFound } from "./component/404";
 
 class App extends Component {
   unsubscribeFromAuth = null;
@@ -24,18 +25,6 @@ class App extends Component {
           console.log("testXXXXX");
           try {
             const userRef = await createUserProfileDocument(user);
-            // userRef.onSnapshot(
-            //   (snapshot) => {
-            //     this.props.setCurrentUser({
-            //       currentUser: {
-            //         id: snapshot.id,
-            //         ...snapshot.data(),
-            //       },
-            //     });
-            //     // store.dispatch(setUserAction(user));
-            //   },
-            //   (e) => console.log("error po vayo")
-            // );
             const snapshot = await userRef.get();
             this.props.setCurrentUser({
               currentUser: {
@@ -79,6 +68,7 @@ class App extends Component {
               )
             }
           />
+          <Route path="*" component={PageNotFound}></Route>
         </Switch>
       </div>
     );

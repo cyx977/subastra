@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FormInput from "../formInput";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
-import CustomButton from "../customButton";
+import { CustomButton } from "../customButton";
 import "./signUp.styles.scss";
 
 class SignUp extends Component {
@@ -22,7 +22,7 @@ class SignUp extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
-    if(password !== confirmPassword){
+    if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
@@ -35,7 +35,7 @@ class SignUp extends Component {
       let result = await createUserProfileDocument(user, {
         displayName,
       });
-      console.log("firestore",result);
+      console.log("firestore", result);
     } catch (e) {
       console.log(e);
     }

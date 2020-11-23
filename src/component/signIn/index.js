@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import FormInput from "../formInput";
 import "./signIn.styles.scss";
-import CustomButton from "../customButton";
+import { CustomButton } from "../customButton";
 import {
   signinWithGoogle,
   // signinWithFacebook,
@@ -20,7 +20,7 @@ class SignIn extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { user } = await auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
         this.state.email,
         this.state.password
       );

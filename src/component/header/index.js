@@ -4,11 +4,11 @@ import { ReactComponent as Logo } from "../../assets/crown.svg";
 import "./header.styles.scss";
 import { logout } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
-
-const Header = ({ currentUser }) => {
-  const history = useHistory();
+import CartIcon from "../cartIcon";
+import { CartDropdown } from "../cartDropdown";
+const Header = ({ currentUser, hidden }) => {
   console.log("currentUser from header ", currentUser);
+  console.log("hidden from header ", hidden);
   return (
     <div className="header">
       <Link to="/" className="logo-container">
@@ -31,10 +31,15 @@ const Header = ({ currentUser }) => {
           </Link>
         )}
       </div>
+      {hidden ? null : <CartDropdown></CartDropdown>}
+      <CartIcon></CartIcon>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({ currentUser: state.user.currentUser });
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser: currentUser,
+  hidden: hidden,
+});
 
 export default connect(mapStateToProps)(Header);
