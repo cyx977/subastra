@@ -13,8 +13,9 @@ export default class ShopPage extends Component {
     return (
       <div className="shop-page">
         {collections.map((collection) => (
-          <div>
+          <div key={collection.id}>
             <CollectionPreview
+              id={collection.id}
               title={collection.title}
               items={collection.items}
             ></CollectionPreview>

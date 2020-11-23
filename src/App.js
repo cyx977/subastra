@@ -22,7 +22,6 @@ class App extends Component {
             currentUser: null,
           });
         } else {
-          console.log("testXXXXX");
           try {
             const userRef = await createUserProfileDocument(user);
             const snapshot = await userRef.get();
@@ -45,7 +44,6 @@ class App extends Component {
     this.unsubscribeFromAuth();
   }
   render() {
-    console.log("appjs ko prop", this.props);
     return (
       <div className="App">
         <Header></Header>

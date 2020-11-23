@@ -7,7 +7,6 @@ import "./cartIcon.styles.scss";
 import { toggleVisibility } from "../../redux/cart/cartAction";
 
 const CartIcon = ({ hidden, toggleVisibility }) => {
-  console.log("visibility is ", hidden);
   return (
     <div className="cart-icon" onClick={toggleVisibility}>
       <ShoppingIcon className="shopping-icon"></ShoppingIcon>
